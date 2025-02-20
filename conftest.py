@@ -1,6 +1,8 @@
 import pytest
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+import json
+import allure
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -28,8 +30,20 @@ def context(request, playwright_instance):
         trace_path = results_dir / f"{request.node.name}-trace.zip"
         context.tracing.stop(path=str(trace_path))
         print(f"Test failed: Trace saved to {trace_path}")
+        allure.attach.file(str(trace_path), name="Trace", attachment_type=allure.attachment_type.TEXT)
+
+        screenshot_path = results_dir / f"{request.node.name}-screenshot.png"
+        page = context.pages[0]
+        page.screenshot(path=str(screenshot_path))
+        with open(screenshot_path, "rb") as image_file:
+            allure.attach(image_file.read(), name="Screenshot", attachment_type=allure.attachment_type.PNG)
     else:
         context.tracing.stop()
 
     context.close()
     browser.close()
+
+@pytest.fixture
+def credentials():
+    with open('/c:/ArchiveAutomation/credentials.json') as f:
+        return json.load(f)
