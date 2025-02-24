@@ -7,7 +7,7 @@ class TestLoginPage:
 
     @pytest.fixture(autouse=True)
     def class_setup(self, page):
-        page.goto("https://devtest.comda.co.il:447/login")
+        page.goto("")
         self.login_page = LoginPage(page)
 
     def test_valid_login(self, page: Page):
