@@ -1,9 +1,16 @@
+import os
 import pytest
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 import json
 import allure
 
+
+@pytest.fixture(autouse=True)
+def disable_pycache():
+    os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+
+    
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
