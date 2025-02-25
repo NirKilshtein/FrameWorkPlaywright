@@ -155,4 +155,9 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
-.pytest_cache
+
+# VS Code settings directory
+.vscode/
+
+# Pytest cache directories
+.pytest_cache/
